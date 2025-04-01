@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador Seguros Solar Emersol</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; }
+    h1 { text-align: center; color: #0066cc; }
+    label { display: block; margin-top: 10px; font-weight: bold; }
+    input, select { width: 100%; padding: 8px; margin-top: 5px; }
+    button { margin-top: 20px; padding: 10px; width: 100%; background-color: #28a745; color: white; border: none; cursor: pointer; font-size: 16px; }
+    .proposta { border: 1px solid #ccc; padding: 15px; margin-top: 20px; }
+    .logo { display: flex; justify-content: center; margin-bottom: 10px; }
+    .logo img { width: 120px; height: auto; }
+  </style>
+</head>
+<body>
+  <div class="logo">
+    <img src="ELEMENTO 640 640.png" alt="Logo Emersoft">
+  </div>
+  <h1>Simulador Seguros Solar Emersol</h1>
+
+  <label for="nome">Nome do Cliente:</label>
+  <input type="text" id="nome" required>
+
+  <label for="valorProjeto">Valor do Projeto (R$):</label>
+  <input type="number" id="valorProjeto" required>
+
+  <label for="prazo">Prazo (em anos):</label>
+  <select id="prazo">
+    <option value="1">1 ano</option>
+    <option value="2">2 anos</option>
+    <option value="3">3 anos</option>
+    <option value="4">4 anos</option>
+    <option value="5">5 anos</option>
+  </select>
+
+  <button onclick="gerarProposta()">Gerar Proposta</button>
+  <div class="proposta" id="proposta"></div>
+
+  <button onclick="salvarProposta()">Salvar Proposta na Planilha</button>
+
+  <script>
+    function formatarMoeda(valor) {
+      return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function calcularSeguro(valor, anos) {
+      const taxa = 0.007349875;
+      const descontos = {1: 1, 2: 0.95, 3: 0.9035, 4: 0.8601, 5: 0.82};
+      let seguroAnual = valor * taxa;
+      if (seguroAnual < 139) seguroAnual = 139;
+      let valorFinal = seguroAnual * anos * descontos[anos];
+      return valorFinal * 2.10; // acresce 110% (multiplica por 2.10)
+    }
+
+    function gerarProposta() {
+      const nome = document.getElementById('nome').value;
+      const valorProjeto = parseFloat(document.getElementById('valorProjeto').value);
+      const prazo = parseInt(document.getElementById('prazo').value);
+
+      const valorSeguro = calcularSeguro(valorProjeto, prazo);
+      const parcela = valorSeguro / 6;
+
+      const propostaHTML = `
+        <h2>Resumo da Proposta</h2>
+        <p><strong>Cliente:</strong> ${nome}</p>
+        <p><strong>Valor do Projeto:</strong> ${formatarMoeda(valorProjeto)}</p>
+        <p><strong>Prazo:</strong> ${prazo} ano(s)</p>
+        <p><strong>Valor do Seguro:</strong> ${formatarMoeda(valorSeguro)}</p>
+        <p><strong>ou 6x de ${formatarMoeda(parcela)} no cartão (sem juros)</strong></p>
+      `;
+
+      document.getElementById('proposta').innerHTML = propostaHTML;
+    }
+
+    function salvarProposta() {
+      const nome = document.getElementById('nome').value;
+      const valorProjeto = parseFloat(document.getElementById('valorProjeto').value);
+      const prazo = parseInt(document.getElementById('prazo').value);
+      const valorSeguro = calcularSeguro(valorProjeto, prazo);
+
+      const data = {
+        nome,
+        valorProjeto,
+        prazo,
+        valorSeguro
+      };
+
+      fetch("https://script.google.com/macros/s/AKfycbyc9e4q29xPD2S5G-qPsfKvW9wiT9KHY4DcmLxLoSsXGgqsqpOnBqJ0Mx4kVC-nPveFAg/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      alert("Proposta salva com sucesso!");
+    }
+  </script>
+</body>
+</html>
