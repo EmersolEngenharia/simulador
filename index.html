@@ -5,41 +5,147 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simulador Seguros Solar Emersol</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; }
-    h1 { text-align: center; color: #0066cc; }
-    label { display: block; margin-top: 10px; font-weight: bold; }
-    input, select { width: 100%; padding: 8px; margin-top: 5px; }
-    button { margin-top: 20px; padding: 10px; width: 100%; background-color: #28a745; color: white; border: none; cursor: pointer; font-size: 16px; }
-    .proposta { border: 1px solid #ccc; padding: 15px; margin-top: 20px; }
-    .logo { display: flex; justify-content: center; margin-bottom: 10px; }
-    .logo img { width: 120px; height: auto; }
+    :root {
+      --primary-color: #0066cc;
+      --accent-color: #28a745;
+      --border-radius: 12px;
+      --input-height: 40px;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f7fa;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      background: #ffffff;
+      max-width: 400px;
+      width: 100%;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--primary-color);
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      font-size: 14px;
+      margin-top: 12px;
+      display: block;
+    }
+
+    input, select {
+      height: var(--input-height);
+      padding: 6px 12px;
+      margin-top: 6px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: var(--border-radius);
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    #nome {
+      width: 100%;
+      height: var(--input-height);
+    }
+
+    .inline-group {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .inline-group > div {
+      width: 48%;
+    }
+
+    .inline-group input,
+    .inline-group select {
+      width: 100%;
+      height: var(--input-height);
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 12px;
+      width: 100%;
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: 15px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    .proposta {
+      background-color: #e9f6ef;
+      border-radius: var(--border-radius);
+      padding: 15px;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+
+    .logo img {
+      width: 100px;
+      height: auto;
+    }
   </style>
 </head>
 <body>
-  <div class="logo">
-    <img src="https://raw.githubusercontent.com/EmersolEngenharia/simulador/main/Logo%20Emersol.png" alt="Logo Emersoft">
+  <div class="container">
+    <div class="logo">
+      <img src="https://raw.githubusercontent.com/EmersolEngenharia/simulador/main/Logo%20Emersol.png" alt="Logo Emersoft">
+    </div>
+    <h1>Simulador Seguros Solar Emersol</h1>
+
+    <label for="nome">Nome do Cliente:</label>
+    <input type="text" id="nome" required>
+
+    <div class="inline-group">
+      <div>
+        <label for="valorProjeto">Projeto (R$):</label>
+        <input type="number" id="valorProjeto" required>
+      </div>
+
+      <div>
+        <label for="prazo">Prazo:</label>
+        <select id="prazo">
+          <option value="1">1 ano</option>
+          <option value="2">2 anos</option>
+          <option value="3">3 anos</option>
+          <option value="4">4 anos</option>
+          <option value="5">5 anos</option>
+        </select>
+      </div>
+    </div>
+
+    <button onclick="gerarProposta()">Gerar Proposta</button>
+    <div class="proposta" id="proposta"></div>
+    <button onclick="salvarProposta()">Salvar Proposta na Planilha</button>
   </div>
-  <h1>Simulador Seguros Solar Emersol</h1>
-
-  <label for="nome">Nome do Cliente:</label>
-  <input type="text" id="nome" required>
-
-  <label for="valorProjeto">Valor do Projeto (R$):</label>
-  <input type="number" id="valorProjeto" required>
-
-  <label for="prazo">Prazo (em anos):</label>
-  <select id="prazo">
-    <option value="1">1 ano</option>
-    <option value="2">2 anos</option>
-    <option value="3">3 anos</option>
-    <option value="4">4 anos</option>
-    <option value="5">5 anos</option>
-  </select>
-
-  <button onclick="gerarProposta()">Gerar Proposta</button>
-  <div class="proposta" id="proposta"></div>
-
-  <button onclick="salvarProposta()">Salvar Proposta na Planilha</button>
 
   <script>
     function formatarMoeda(valor) {
@@ -52,14 +158,13 @@
       let seguroAnual = valor * taxa;
       if (seguroAnual < 139) seguroAnual = 139;
       let valorFinal = seguroAnual * anos * descontos[anos];
-      return valorFinal * 2.10; // acresce 110% (multiplica por 2.10)
+      return valorFinal * 2.10;
     }
 
     function gerarProposta() {
       const nome = document.getElementById('nome').value;
       const valorProjeto = parseFloat(document.getElementById('valorProjeto').value);
       const prazo = parseInt(document.getElementById('prazo').value);
-
       const valorSeguro = calcularSeguro(valorProjeto, prazo);
       const parcela = valorSeguro / 6;
 
