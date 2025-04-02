@@ -6,145 +6,162 @@
   <title>Simulador Seguros Solar Emersol</title>
   <style>
     :root {
-      --primary-color: #0066cc;
-      --accent-color: #28a745;
-      --border-radius: 12px;
+      --primary-color: #00bcd4; /* Cyan claro */
+      --accent-color: #00bcd4;
+      --text-color: #333;
+      --background: #f4f7fa;
       --input-height: 40px;
+      --border-radius: 16px;
     }
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f4f7fa;
+      background: var(--background);
       margin: 0;
-      padding: 20px;
+      padding: 0;
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
     }
 
     .container {
-      background: #ffffff;
+      background: white;
+      margin-top: 20px;
+      width: 95%;
       max-width: 400px;
-      width: 100%;
       border-radius: var(--border-radius);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+    }
+
+    .header {
+      background: var(--primary-color);
+      color: white;
+      padding: 24px;
+      text-align: center;
+      border-bottom-left-radius: 50% 20px;
+      border-bottom-right-radius: 50% 20px;
+    }
+
+    .header img {
+      width: 80px;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    .header h1 {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    .content {
       padding: 20px;
     }
 
-    h1 {
-      text-align: center;
-      color: var(--primary-color);
-      font-size: 20px;
-      margin-bottom: 20px;
-    }
-
     label {
-      font-weight: bold;
+      font-weight: 600;
       font-size: 14px;
-      margin-top: 12px;
       display: block;
+      margin-top: 12px;
+      margin-bottom: 4px;
     }
 
     input, select {
-      height: var(--input-height);
-      padding: 6px 12px;
-      margin-top: 6px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: var(--border-radius);
-      font-size: 14px;
-      box-sizing: border-box;
-    }
-
-    #nome {
       width: 100%;
       height: var(--input-height);
+      padding: 8px 12px;
+      font-size: 14px;
+      border-radius: var(--border-radius);
+      border: 1px solid #ccc;
+      box-sizing: border-box;
     }
 
     .inline-group {
       display: flex;
-      justify-content: space-between;
       gap: 8px;
     }
 
     .inline-group > div {
-      width: 48%;
+      flex: 1;
     }
 
-    .inline-group input,
-    .inline-group select {
+    .button {
       width: 100%;
-      height: var(--input-height);
-    }
-
-    button {
-      margin-top: 15px;
       padding: 12px;
-      width: 100%;
+      margin-top: 16px;
       background-color: var(--accent-color);
       color: white;
       border: none;
       border-radius: var(--border-radius);
+      font-size: 16px;
       cursor: pointer;
-      font-size: 15px;
-      transition: background-color 0.3s;
+      transition: background 0.3s;
     }
 
-    button:hover {
-      background-color: #218838;
+    .button:hover {
+      background-color: #0097a7;
     }
 
     .proposta {
-      background-color: #e9f6ef;
+      background-color: #e0f7fa;
       border-radius: var(--border-radius);
-      padding: 15px;
+      padding: 16px;
       margin-top: 20px;
       font-size: 14px;
-    }
-
-    .logo {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 15px;
-    }
-
-    .logo img {
-      width: 100px;
-      height: auto;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="logo">
+    <div class="header">
       <img src="https://raw.githubusercontent.com/EmersolEngenharia/simulador/main/Logo%20Emersol.png" alt="Logo Emersoft">
+      <h1>Simulador Seguros Solar Emersol</h1>
     </div>
-    <h1>Simulador Seguros Solar Emersol</h1>
+    <div class="content">
+      <label for="nome">Nome do Cliente:</label>
+      <input type="text" id="nome" required>
 
-    <label for="nome">Nome do Cliente:</label>
-    <input type="text" id="nome" required>
+      <div class="inline-group">
+        <div>
+          <label for="valorProjeto">Projeto (R$):</label>
+          <input type="number" id="valorProjeto" required>
+        </div>
 
-    <div class="inline-group">
-      <div>
-        <label for="valorProjeto">Projeto (R$):</label>
-        <input type="number" id="valorProjeto" required>
+        <div>
+          <label for="prazo">Prazo:</label>
+          <select id="prazo">
+            <option value="1">1 ano</option>
+            <option value="2">2 anos</option>
+            <option value="3">3 anos</option>
+            <option value="4">4 anos</option>
+            <option value="5">5 anos</option>
+          </select>
+        </div>
       </div>
 
-      <div>
-        <label for="prazo">Prazo:</label>
-        <select id="prazo">
-          <option value="1">1 ano</option>
-          <option value="2">2 anos</option>
-          <option value="3">3 anos</option>
-          <option value="4">4 anos</option>
-          <option value="5">5 anos</option>
-        </select>
-      </div>
-    </div>
+      <div class="inline-group">
+        <div>
+          <label for="estrutura">Tipo de Estrutura:</label>
+          <select id="estrutura">
+            <option value="telhado">Telhado</option>
+            <option value="solo">Solo/Carport</option>
+          </select>
+        </div>
 
-    <button onclick="gerarProposta()">Gerar Proposta</button>
-    <div class="proposta" id="proposta"></div>
-    <button onclick="salvarProposta()">Salvar Proposta na Planilha</button>
+        <div>
+          <label for="local">Local da Instalação:</label>
+          <select id="local">
+            <option value="urbana">Zona Urbana</option>
+            <option value="rural">Zona Rural</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="button" onclick="gerarProposta()">Gerar Proposta</button>
+      <div class="proposta" id="proposta"></div>
+      <button class="button" onclick="salvarProposta()">Salvar Proposta na Planilha</button>
+    </div>
   </div>
 
   <script>
@@ -152,20 +169,26 @@
       return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
-    function calcularSeguro(valor, anos) {
+    function calcularSeguro(valor, anos, estrutura, local) {
       const taxa = 0.007349875;
       const descontos = {1: 1, 2: 0.95, 3: 0.9035, 4: 0.8601, 5: 0.82};
       let seguroAnual = valor * taxa;
       if (seguroAnual < 139) seguroAnual = 139;
       let valorFinal = seguroAnual * anos * descontos[anos];
-      return valorFinal * 2.10;
+      let fatorExtra = 1;
+      if (estrutura === 'solo') fatorExtra += 0.10;
+      if (local === 'rural') fatorExtra += 0.10;
+      return valorFinal * 2.10 * fatorExtra;
     }
 
     function gerarProposta() {
       const nome = document.getElementById('nome').value;
       const valorProjeto = parseFloat(document.getElementById('valorProjeto').value);
       const prazo = parseInt(document.getElementById('prazo').value);
-      const valorSeguro = calcularSeguro(valorProjeto, prazo);
+      const estrutura = document.getElementById('estrutura').value;
+      const local = document.getElementById('local').value;
+
+      const valorSeguro = calcularSeguro(valorProjeto, prazo, estrutura, local);
       const parcela = valorSeguro / 6;
 
       const propostaHTML = `
@@ -173,6 +196,8 @@
         <p><strong>Cliente:</strong> ${nome}</p>
         <p><strong>Valor do Projeto:</strong> ${formatarMoeda(valorProjeto)}</p>
         <p><strong>Prazo:</strong> ${prazo} ano(s)</p>
+        <p><strong>Estrutura:</strong> ${estrutura === 'solo' ? 'Solo/Carport' : 'Telhado'}</p>
+        <p><strong>Local:</strong> ${local === 'rural' ? 'Zona Rural' : 'Zona Urbana'}</p>
         <p><strong>Valor do Seguro:</strong> ${formatarMoeda(valorSeguro)}</p>
         <p><strong>ou 6x de ${formatarMoeda(parcela)} no cartão (sem juros)</strong></p>
       `;
@@ -184,12 +209,16 @@
       const nome = document.getElementById('nome').value;
       const valorProjeto = parseFloat(document.getElementById('valorProjeto').value);
       const prazo = parseInt(document.getElementById('prazo').value);
-      const valorSeguro = calcularSeguro(valorProjeto, prazo);
+      const estrutura = document.getElementById('estrutura').value;
+      const local = document.getElementById('local').value;
+      const valorSeguro = calcularSeguro(valorProjeto, prazo, estrutura, local);
 
       const data = {
         nome,
         valorProjeto,
         prazo,
+        estrutura,
+        local,
         valorSeguro
       };
 
